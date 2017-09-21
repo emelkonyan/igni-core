@@ -329,9 +329,18 @@ class EntityManager
                 } else {
                     $value = $model->getOriginal($field);
                 }
-
                 $data = compact('options', 'value', 'field', 'model');
-                $fieldInstances->push(\Field::make($data));
+                $data['parent'] = $model;
+
+                $fieldModel = \Field::make($data);
+                /*  If you want to attach the parent model 
+                    to the field, declare a public $parent
+                    property in the src\Fields\ model
+                */
+
+                $fieldModel->afterRender();
+
+                $fieldInstances->push($fieldModel);
             }
         }
 

@@ -12,7 +12,6 @@ return [
             'type' => 'text',
             'label' => 'Title',
         ],
-        :image_upload
     ],
     :image_fields
     'adminMenu' => [

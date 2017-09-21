@@ -28,16 +28,13 @@ class EntityController extends AdminController
      */
     public function store(AdminFormRequest $request)
     {
+
         $input = $request->all();
 
         if ($this->model instanceof Translatable) {
             $this->model->setActiveLocale($input['locale']);
         }
         $record = $this->model->create($input);
-
-        foreach ($this->model->getManyToManyFields() as $metod => $array) {
-            $record->$metod()->sync($request->get($array, []));
-        }
 
         $this->notify([
             'type' => 'success',
@@ -67,10 +64,6 @@ class EntityController extends AdminController
         $record = $this->model->findOrFail($id);
 
         $record->update($input);
-
-        foreach ($this->model->getManyToManyFields() as $metod => $array) {
-            $record->$metod()->sync($request->get($array, []));
-        }
 
         $this->notify([
             'type' => 'success',
