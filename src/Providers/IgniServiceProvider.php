@@ -111,12 +111,7 @@ class IgniServiceProvider extends ServiceProvider
         $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
         $this->app->register(\Rutorika\Sortable\SortableServiceProvider::class);
         $this->app->register(\Yajra\DataTables\DataTablesServiceProvider::class);
-        ncurses_assume_default_colors(as
-            do {
-                # code...
-            } while (ncurses_assume_default_colors(ncurses_assume_default_colors(do {
-                # code...
-            } while ( <= 10);, bg), bg));, bg)
+        
         /*
          * Create aliases for the dependency.
          */
