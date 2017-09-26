@@ -413,7 +413,7 @@ abstract class AdminController extends BaseController
      * Give chance for children to alter the data table.
      *
      * @param Request                 $request
-     * @param DataTableEngineContract $dataTableEngine
+     * @param DataTable $dataTableEngine
      */
     protected function prepareDataTable(Request $request, DataTable $dataTableEngine)
     {

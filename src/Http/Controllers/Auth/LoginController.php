@@ -69,7 +69,7 @@ class LoginController extends Controller
 
         
         // We trigger two request to database, maybe we need custom auth provider.
-        if ($user ) {
+        if ($user && $user->is_admin) {
             if ($this->attemptLogin($request)) {
                 return $this->sendLoginResponse($request);
             }
