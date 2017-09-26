@@ -93,7 +93,8 @@ class SidebarItem
             return true;
         }
 
-        $resourceNameArray = explode('.', request()->route()->getName());
+        // TODO Version Dependant
+        $resourceNameArray = explode('.', \Route::currentRouteName());
         $resourceName = reset($resourceNameArray);
 
         if (strcasecmp($resourceName, $this->getEntityId()) === 0) {
@@ -138,16 +139,16 @@ class SidebarItem
      */
     public function getHref()
     {
-        if (isset($this->link)) {
-            $exploded = explode(', ', $this->link);
-            if (! isset($exploded[1])) {
-                return route($this->link);
-            } else {
-                return route($exploded[0], $exploded[1]);
-            }
-        }
-
-        return '#';
+        if (isset($this->link)) {   
+            $exploded = explode(', ', $this->link);        
+            if (! isset($exploded[1])) {       
+               return route($this->link);     
+            } else {       
+                return route($exploded[0], $exploded[1]);      
+            }      
+        }      
+       
+        return '#'
     }
 
     /**

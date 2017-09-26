@@ -25,6 +25,11 @@ class Factory implements FactoryContract
         'imageSingle' => ImageSingle::class,
         'wysiwyg' => Wysiwyg::class,
         'manyToManySelect' => ManyToManySelect::class,
+        'model' => Model::class,
+        'fk' => Fk::class,
+        'buddy_type' => BuddyType::class,
+        'versions' => Versions::class,
+        'cloud' => Cloud::class,
     ];
 
     /**
@@ -54,10 +59,14 @@ class Factory implements FactoryContract
             throw new \Exception($this->fields[$type].' must be instance of '.Field::class);
         }
 
+        
+        if ($parent) {
+            $instance->parent = $parent;
+        }        
+
         if (method_exists($instance, 'setModel')) {
             $instance->setModel($model);
         }
-
         return $instance;
     }
 

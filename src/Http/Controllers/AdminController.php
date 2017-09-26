@@ -119,11 +119,14 @@ abstract class AdminController extends BaseController
                 $columnName = preg_replace('/[^0-9a-zA-Z]+/', '', $column);
                 $columnName = studly_case($columnName);
                 $method = 'build'.$columnName.'Column';
+                
                 if (method_exists($this, 'build'.$columnName.'Column')) {
+
                     $dataTableEngine->editColumn($column, function ($data) use ($method) {
                         return call_user_func([$this, $method], $data);
                     });
                 }
+
             }
 
             $this->prepareDataTable($request, $dataTableEngine);
@@ -187,11 +190,10 @@ abstract class AdminController extends BaseController
             } else {
                 $query->addSelect($table.'.'.$column);
             }
-
-            //Check if the user is trying to filter using a get parameter
-            if ($request->has($column)) {
-                $query->where($column, '=', $request->input($column));
-            }
+            //Check if the user is trying to filter using a get parameter      
+            if ($request->has($column)) {      
+                $query->where($column, '=', $request->input($column));     
+            }            
         }
 
         if (! empty($with)) {
@@ -201,7 +203,6 @@ abstract class AdminController extends BaseController
             // We should refactor this and find actual related field.
             $query->select($table.'.*');
         }
-
         return $query;
     }
 
@@ -221,7 +222,7 @@ abstract class AdminController extends BaseController
     public function edit($id)
     {
         $this->viewData['form'] = \Entity::getForm($this->model->findOrFail($id));
-
+        $this->model = $this->model->findOrFail($id);
         return view($this->defaultFormView, $this->viewData);
     }
 
@@ -282,7 +283,6 @@ abstract class AdminController extends BaseController
                 }
             }
         }
-
         return $this->dataTableColumns;
     }
 
@@ -294,16 +294,14 @@ abstract class AdminController extends BaseController
     protected function getActionButtons($record)
     {
         $buttons = [];
-        $queryString = str_replace(request()->url(), '', request()->fullURL());
-
         if (isset($this->viewData['editRoute'])) {
             $buttons[] = '<a href="'.route($this->viewData['editRoute'],
-                    ['id' => $record->id]).$queryString.'" class="btn btn-primary">'.trans('ignicms::admin.edit').'</a>';
+                     ['id' => $record->id]).$queryString.'" class="btn btn-primary">'.trans('ignicms::admin.edit').'</a>';
         }
 
         if (isset($this->viewData['destroyRoute'])) {
             $buttons[] = '<a href="#"  class="js-open-delete-modal btn btn-danger"
-                    data-delete-url="'.route($this->viewData['destroyRoute'], ['id' => $record->id]).$queryString.'">
+                   data-delete-url="'.route($this->viewData['destroyRoute'], ['id' => $record->id]).$queryString.'">
                     '.trans('ignicms::admin.delete').'
                 </a>';
         }
@@ -336,7 +334,7 @@ abstract class AdminController extends BaseController
     public function getDataTablesAjaxUrl()
     {
         $queryString = str_replace(request()->url(), '', request()->fullURL());
-
+       
         return route($this->getResourceConfig()['id'].'.index').$queryString;
     }
 
@@ -410,11 +408,13 @@ abstract class AdminController extends BaseController
     /**
      * Give chance for children to alter the data table.
      *
-     * @param Request   $request
-     * @param DataTable $dataTableEngine
+     * @param Request                 $request
+     * @param DataTableEngineContract $dataTableEngine
      */
-    protected function prepareDataTable(Request $request, DataTable $dataTableEngine)
+    protected function prepareDataTable(Request $request, DataTableEngineContract $dataTableEngine)
     {
+        /*** Build-in model specific data filtering ***/
+        $this->model->prepareDataTable($dataTableEngine);
     }
 
     /**

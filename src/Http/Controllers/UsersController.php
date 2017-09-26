@@ -9,6 +9,8 @@ use Response;
 
 class UsersController extends AdminController
 {
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -17,7 +19,7 @@ class UsersController extends AdminController
     public function create()
     {
         $this->viewData['form'] = \Entity::getForm($this->model);
-
+        
         return view($this->defaultFormView, $this->viewData);
     }
 
@@ -30,6 +32,8 @@ class UsersController extends AdminController
      */
     public function store(UserRequest $request)
     {
+
+
         $input = $request->except('roles');
 
         if ($request->has('password')) {
@@ -39,9 +43,10 @@ class UsersController extends AdminController
         }
 
         $record = $this->model->create($input);
-        foreach ($this->model->getManyToManyFields() as $metod => $array) {
-            $record->$metod()->sync($request->get($array, []));
-        }
+
+        foreach ($this->model->getManyToManyFields() as $metod => $array) {     
+            $record->$metod()->sync($request->get($array, []));        
+        }        
 
         if ($request->has('roles')) {
             $record->syncRoles($request->roles);
@@ -66,6 +71,8 @@ class UsersController extends AdminController
      */
     public function update(UserUpdateRequest $request, $id)
     {
+       
+        
         $input = $request->except('roles');
 
         if ($request->has('password')) {
@@ -80,9 +87,10 @@ class UsersController extends AdminController
             $record->syncRoles($request->roles);
         }
 
-        foreach ($this->model->getManyToManyFields() as $metod => $array) {
-            $record->$metod()->sync($request->get($array, []));
+        foreach ($this->model->getManyToManyFields() as $metod => $array) {        
+            $record->$metod()->sync($request->get($array, []));        
         }
+
 
         $record->update($input);
 
