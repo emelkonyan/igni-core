@@ -44,6 +44,10 @@ class UsersController extends AdminController
 
         $record = $this->model->create($input);
 
+        foreach ($this->model->getManyToManyFields() as $metod => $array) {     
+            $record->$metod()->sync($request->get($array, []));        
+        }        
+
         if ($request->has('roles')) {
             $record->syncRoles($request->roles);
         }
@@ -82,6 +86,11 @@ class UsersController extends AdminController
         if ($request->has('roles')) {
             $record->syncRoles($request->roles);
         }
+
+        foreach ($this->model->getManyToManyFields() as $metod => $array) {        
+            $record->$metod()->sync($request->get($array, []));        
+        }
+
 
         $record->update($input);
 

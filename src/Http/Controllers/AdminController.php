@@ -13,8 +13,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use View;
-use Yajra\Datatables\Contracts\DataTableEngineContract;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Contracts\DataTable;
+use Yajra\DataTables\DataTables;
 
 /**
  * Class AdminController.
@@ -97,7 +97,7 @@ abstract class AdminController extends BaseController
 
     /**
      * @param Request    $request
-     * @param Datatables $dataTable
+     * @param DataTables $dataTable
      *
      * @return \Illuminate\Http\JsonResponse|View
      */
@@ -105,7 +105,7 @@ abstract class AdminController extends BaseController
     {
         $request = app(Request::class);
         if ($request->ajax()) {
-            $dataTable = app(Datatables::class);
+            $dataTable = app(DataTables::class);
             $dataTableEngine = $dataTable->eloquent($this->prepareModelQuery($request));
 
             if ($this->hasActionButtons()) {
@@ -190,6 +190,10 @@ abstract class AdminController extends BaseController
             } else {
                 $query->addSelect($table.'.'.$column);
             }
+            //Check if the user is trying to filter using a get parameter      
+            if ($request->has($column)) {      
+                $query->where($column, '=', $request->input($column));     
+            }            
         }
 
         if (! empty($with)) {
@@ -292,12 +296,12 @@ abstract class AdminController extends BaseController
         $buttons = [];
         if (isset($this->viewData['editRoute'])) {
             $buttons[] = '<a href="'.route($this->viewData['editRoute'],
-                    ['id' => $record->id]).'" class="btn btn-primary">'.trans('ignicms::admin.edit').'</a>';
+                     ['id' => $record->id]).$queryString.'" class="btn btn-primary">'.trans('ignicms::admin.edit').'</a>';
         }
 
         if (isset($this->viewData['destroyRoute'])) {
             $buttons[] = '<a href="#"  class="js-open-delete-modal btn btn-danger"
-                    data-delete-url="'.route($this->viewData['destroyRoute'], ['id' => $record->id]).'">
+                   data-delete-url="'.route($this->viewData['destroyRoute'], ['id' => $record->id]).$queryString.'">
                     '.trans('ignicms::admin.delete').'
                 </a>';
         }
@@ -329,7 +333,9 @@ abstract class AdminController extends BaseController
      */
     public function getDataTablesAjaxUrl()
     {
-        return route($this->getResourceConfig()['id'].'.index');
+        $queryString = str_replace(request()->url(), '', request()->fullURL());
+       
+        return route($this->getResourceConfig()['id'].'.index').$queryString;
     }
 
     //    public function getModel(){

@@ -36,6 +36,10 @@ class EntityController extends AdminController
         }
         $record = $this->model->create($input);
 
+        foreach ($this->model->getManyToManyFields() as $metod => $array) {        
+            $record->$metod()->sync($request->get($array, []));        
+        }
+        
         $this->notify([
             'type' => 'success',
             'title' => 'Successful create!',
@@ -61,10 +65,16 @@ class EntityController extends AdminController
             $this->model->setActiveLocale($input['locale']);
         }
 
+
+        
         $record = $this->model->findOrFail($id);
 
         $record->update($input);
 
+        foreach ($this->model->getManyToManyFields() as $metod => $array) {     
+            $record->$metod()->sync($request->get($array, []));        
+        }
+        
         $this->notify([
             'type' => 'success',
             'title' => 'Successful update!',
