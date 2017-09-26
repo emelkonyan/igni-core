@@ -114,12 +114,13 @@ abstract class AdminController extends BaseController
                 });
             }
 
+            $this->model->where("parent_id", "=", "0");
             // Check for any fields that needs custom building.
             foreach ($this->model->getAdminTableColumns() as $column) {
                 $columnName = preg_replace('/[^0-9a-zA-Z]+/', '', $column);
                 $columnName = studly_case($columnName);
                 $method = 'build'.$columnName.'Column';
-                
+
                 if (method_exists($this, 'build'.$columnName.'Column')) {
 
                     $dataTableEngine->editColumn($column, function ($data) use ($method) {
@@ -129,7 +130,7 @@ abstract class AdminController extends BaseController
 
             }
 
-            $this->prepareDataTable($request, $dataTableEngine);
+            //$this->prepareDataTable($request, $dataTableEngine);
 
             return $dataTableEngine->make(true);
         }
@@ -294,6 +295,9 @@ abstract class AdminController extends BaseController
     protected function getActionButtons($record)
     {
         $buttons = [];
+        $queryString = str_replace(request()->url(), '', request()->fullURL());
+
+
         if (isset($this->viewData['editRoute'])) {
             $buttons[] = '<a href="'.route($this->viewData['editRoute'],
                      ['id' => $record->id]).$queryString.'" class="btn btn-primary">'.trans('ignicms::admin.edit').'</a>';
@@ -411,7 +415,7 @@ abstract class AdminController extends BaseController
      * @param Request                 $request
      * @param DataTableEngineContract $dataTableEngine
      */
-    protected function prepareDataTable(Request $request, DataTableEngineContract $dataTableEngine)
+    protected function prepareDataTable(Request $request, DataTable $dataTableEngine)
     {
         /*** Build-in model specific data filtering ***/
         $this->model->prepareDataTable($dataTableEngine);

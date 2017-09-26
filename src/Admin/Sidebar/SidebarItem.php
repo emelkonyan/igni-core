@@ -148,7 +148,7 @@ class SidebarItem
             }      
         }      
        
-        return '#'
+        return '#';
     }
 
     /**
