@@ -204,6 +204,8 @@ abstract class AdminController extends BaseController
             // We should refactor this and find actual related field.
             $query->select($table.'.*');
         }
+
+        $this->postBuilderQuery($query);
         return $query;
     }
 
@@ -413,7 +415,7 @@ abstract class AdminController extends BaseController
      * Give chance for children to alter the data table.
      *
      * @param Request                 $request
-     * @param DataTable $dataTableEngine
+     * @param DataTable             $dataTableEngine
      */
     protected function prepareDataTable(Request $request, DataTable $dataTableEngine)
     {
@@ -427,5 +429,14 @@ abstract class AdminController extends BaseController
     public function getSidebar()
     {
         return app(Sidebar::class);
+    }
+
+    /** 
+    *   Blow-trough function for a controller-specific
+    *   query
+    */
+
+    public function postBuilderQuery($query) {
+        return $query;
     }
 }
