@@ -245,6 +245,7 @@ class EntityManager
                     \Route::resource($resource, $config['controller'], [
                         'names' => build_resource_backport($resource),
                     ]);
+
                 } else {
                     \Route::resource($resource, $config['controller'], [
                         'only' => $methods,
@@ -261,7 +262,10 @@ class EntityManager
             }
 
             $this->addRoutes($resource, build_resource_backport($resource));
-        }
+
+
+        } 
+
     }
 
     /**
