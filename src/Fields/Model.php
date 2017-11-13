@@ -14,8 +14,16 @@ class Model extends Field
         parent::__construct($fieldName, $options, $value);
     }
 
-    protected function beforeToHtml()
+    public function afterRender()
     {
-    	dd($this);
+
+        return; 
+        error_reporting(E_ALL);
+        ini_set("display_errors", 1);
+        $baby = new \Despark\Model\Baby;
+        $baby = $baby->findOrFail("21711");
+
+    	return $this->entityManager->getForm("baby");
+        //dd($this);
     }    
 }

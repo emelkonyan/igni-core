@@ -9,8 +9,7 @@ use Response;
 
 class UsersController extends AdminController
 {
-
-
+    
     /**
      * Show the form for creating a new resource.
      *

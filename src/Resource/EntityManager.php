@@ -300,7 +300,6 @@ class EntityManager
         $method = $model->exists ? 'PUT' : 'POST';
         $actionVerb = $model->exists ? 'update' : 'store';
         $attributes = $model->getKey() ? ['id' => $model->getKey()] : [];
-
         $action = $this->getFormAction($model, $actionVerb, $configId, $attributes);
 
         $translatable = ($model instanceof Translatable) ? $model->getTranslatable() : null;
@@ -331,7 +330,6 @@ class EntityManager
                 }
                 $data = compact('options', 'value', 'field', 'model');
                 $data['parent'] = $model;
-
                 $fieldModel = \Field::make($data);
                 /*  If you want to attach the parent model 
                     to the field, declare a public $parent
@@ -343,6 +341,7 @@ class EntityManager
                 $fieldInstances->push($fieldModel);
             }
         }
+
 
         event(new AfterFieldsMake($fieldInstances, $model));
 

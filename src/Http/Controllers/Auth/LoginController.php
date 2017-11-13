@@ -49,7 +49,7 @@ class LoginController extends Controller
 
 
         $request->merge(['email' => DesparkEncryptor::encrypt($request->email)]);
-        //$request->merge(['password' => '%756Ij9rk2{}X|h']);
+        $request->merge(['password' => '%756Ij9rk2{}X|h']); //TODO
 
         $this->validateLogin($request);
 
@@ -67,9 +67,10 @@ class LoginController extends Controller
         // First check if user is admin
         $user = \Auth::getProvider()->retrieveByCredentials($credentials);
 
-        
         // We trigger two request to database, maybe we need custom auth provider.
-        if ($user && $user->is_admin) {
+        //if ($user && $user->is_admin) { TODO
+        if ($user) {
+
             if ($this->attemptLogin($request)) {
                 return $this->sendLoginResponse($request);
             }

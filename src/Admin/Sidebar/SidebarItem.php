@@ -119,6 +119,7 @@ class SidebarItem
             }
         }
 
+
         return false;
     }
 

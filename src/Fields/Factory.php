@@ -30,6 +30,11 @@ class Factory implements FactoryContract
         'buddy_type' => BuddyType::class,
         'versions' => Versions::class,
         'cloud' => Cloud::class,
+        'nested' => Nested::class,
+        'image' => Image::class,
+        'video' => Video::class,
+        'daystoweeks' => DaysToWeeks::class,
+        'questionnaire_answers' => QuestionnaireAnswers::class,
     ];
 
     /**

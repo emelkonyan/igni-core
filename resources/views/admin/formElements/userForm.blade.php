@@ -1,12 +1,14 @@
 {{-- TODO action verb --}}
+{{ dd($form) }}
 {!!  Form::open([
     'url' => $form->getAction(),
     'method' => $form->getMethod(),
     'role' => $form->getRole(),
     'enctype'=> $form->getEnctype() ?? 'multipart/form-data', ]
 ) !!}
-
 {!! $form->renderFields() !!} 
+{!! $form->renderFields() !!} 
+
 
 <button type="submit" class="btn btn-primary">Save</button>
 

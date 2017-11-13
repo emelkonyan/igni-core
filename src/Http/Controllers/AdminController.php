@@ -222,6 +222,7 @@ abstract class AdminController extends BaseController
      */
     public function edit($id)
     {
+        $baby_model = new \App\Models\Baby;
         $this->viewData['form'] = \Entity::getForm($this->model->findOrFail($id));
 
         return view($this->defaultFormView, $this->viewData);

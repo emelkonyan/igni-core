@@ -166,7 +166,6 @@ class IgniServiceProvider extends ServiceProvider
     {
         \Validator::extendImplicit('gallery_required', function ($attribute, $value, $parameters, $validator) {
             /* @var Validator $validator */
-
             if (class_exists($parameters[0])) {
                 $model = new $parameters[0]();
                 // we need to build the model

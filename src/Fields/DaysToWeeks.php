@@ -4,7 +4,10 @@ namespace Despark\Cms\Fields;
 
 use Despark\Cms\Contracts\SourceModel;
 
-class ManyToManySelect extends Field
+/**
+ * Class Select.
+ */
+class DaysToWeeks extends Field
 {
     /**
      * @var SourceModel
@@ -12,16 +15,13 @@ class ManyToManySelect extends Field
     protected $sourceModel;
 
     /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @return array
      */
     public function getSelectOptions()
     {
-        return $this->getSourceModel()->toOptionsArray();
+        $options = Array("" => "Both", "bump_buddy" => "Bump buddy", "baby_buddy" => "Baby buddy");
+
+        return $options;
     }
 
     /**
@@ -43,41 +43,5 @@ class ManyToManySelect extends Field
         }
 
         return $this->sourceModel;
-    }
-
-    /**
-     * Sets the value of model.
-     *
-     * @param mixed $model the model
-     *
-     * @return self
-     */
-    public function setModel($model)
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of model.
-     *
-     * @return mixed
-     */
-    public function getModel()
-    {
-        return $this->model;
-    }
-
-    /**
-     * Gets the value of the relation method.
-     *
-     * @return mixed
-     */
-    public function getRelationMethod()
-    {
-        $relationMethod = $this->getOptions('relationMethod');
-        
-        return $this->model->$relationMethod;
     }
 }
