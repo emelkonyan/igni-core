@@ -6,6 +6,7 @@ namespace Despark\Cms\Admin\Sidebar;
  * Class SidebarItem.
  */
 use Despark\Cms\Admin\Sidebar;
+use Despark\Helpers\Txt;
 
 /**
  * Class SidebarItem.
@@ -147,7 +148,10 @@ class SidebarItem
             } else {       
                 return route($exploded[0], $exploded[1]);      
             }      
-        }      
+        } else if (isset($this->custom_link)) {
+
+            return Txt::site($this->custom_link);
+        }   
        
         return '#';
     }
