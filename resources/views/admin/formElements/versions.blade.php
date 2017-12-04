@@ -4,22 +4,31 @@
     $children = $children['children']; 
 
     $default = $field->parent;
+
+    $ajax_link = \Despark\Helpers\Txt::site('/admin/dailyinfo/newversion');
+
 ?>
+
 
 <div>
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist" id="tabs_navigation">
     <li role="presentation" class="active"><a href="#default" aria-controls="home" role="tab" data-toggle="tab">Default</a></li>
+    @if($children)
     @foreach ($children as $child)
-        <li role="presentation"><a href="#version_{{ $child->id }}" aria-controls="profile" role="tab" data-toggle="tab">
+        <li role="presentation"><a href="#version_{{ $child->id() }}" aria-controls="profile" role="tab" data-toggle="tab">
         {{ $child->decode_spider()  }}
         </a></li>
     @endforeach
-    <li role="presentation"><a data-toggle="modal" data-target="#myModal" id="add" href="#default" aria-controls="home" role="tab" data-toggle="tab">Add new version</a></li>    
+    @endif
+
+    @if($default->id())
+        <li role="presentation"><a data-toggle="modal" data-target="#myModal" id="add" href="#default" aria-controls="home" role="tab" data-toggle="tab">Add new version</a></li>
+    @endif    
   </ul>
 
-  <!-- Tab panes -->
+<!-- Tab panes -->
   <div class="tab-content" id="tab_content">
     <div role="tabpanel" class="tab-pane active" id="default">
          <div class="form-group {{ $errors->has($elementName) ? 'has-error' : '' }}">
@@ -31,7 +40,7 @@
         <div class="form-group {{ $errors->has($fieldName) ? 'has-error' : '' }}">
             {!! Form::label("Content") !!}
             {!! Form::textarea("content", $default->content, [
-                'id' =>  "content_" . $default->id,
+                'id' =>  "content_" . $default->id(),
                 'class' => "form-control wysiwyg",
                 'placeholder' => "",
             ] ) !!}
@@ -41,6 +50,7 @@
         </div>       
 
     </div>
+    @if($children)
     @foreach ($children as $child)
         <div role="tabpanel" class="tab-pane" id="version_{{ $child->id }}">
             {!! Form::hidden("title", $child->id, $field->getChildrenAttributes($loop->iteration, "id")) !!}
@@ -60,12 +70,12 @@
             </div>
         </div>
     @endforeach
+    @endif
   </div>
 
+
+
 </div>
-
-
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -95,6 +105,7 @@
 
   </div>
 </div>
+
 
 
 @push('additionalScripts')
@@ -161,8 +172,11 @@
 
     $("#submit_version").click(function() {
         $.get(
-            "/admin/dailyinfo/newversion",
-            {type: "{{ $default->type }}." + $("#partnership").val(), id: {{ $default->id }} },
+            "{{ $ajax_link }}",
+            {
+                type: "{{ $default->type }}." + $("#partnership").val(), 
+                id: "{{ $default->id()  }}"
+            },
             function(d) {
                 if(d.success == 'false') {
                     alert(d.message);
@@ -182,4 +196,3 @@
     });
 </script>
 @endpush
-

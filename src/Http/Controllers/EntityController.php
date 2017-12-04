@@ -31,21 +31,25 @@ class EntityController extends AdminController
 
         $input = $request->all();
 
+
         if ($this->model instanceof Translatable) {
             $this->model->setActiveLocale($input['locale']);
         }
-        $record = $this->model->create($input);
+        
+        $record = $this->model->set($input);
+        //$record = $this->model->create($input);
 
         foreach ($this->model->getManyToManyFields() as $metod => $array) {        
             $record->$metod()->sync($request->get($array, []));        
         }
         
+
+        $this->model->save();
         $this->notify([
             'type' => 'success',
             'title' => 'Successful create!',
             'description' => $this->getResourceConfig()['name'].' is created successfully!',
         ]);
-
         return redirect(route($this->getResourceConfig()['id'].'.edit', ['id' => $record->id]));
     }
 

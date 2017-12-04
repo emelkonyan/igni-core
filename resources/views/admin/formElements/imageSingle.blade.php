@@ -1,4 +1,5 @@
 {{-- Image --}}
+
 <div class="form-group {{ $errors->has($fieldName) ? 'has-error' : '' }}">
     {!! Form::label($elementName, $field->getLabel()) !!}
     @if($field->getModel()->hasImages($fieldName))

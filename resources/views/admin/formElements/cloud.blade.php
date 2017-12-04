@@ -1,11 +1,13 @@
 <?php 
     //dd($field->getFieldName());     
     $values = $field->getValue(); 
+
 ?>
 <div class="form-group {{ $errors->has($elementName) ? 'has-error' : '' }}" id="cloud_{{ $field->getFieldName() }}">
     {!! Form::label($elementName, $field->getLabel()) !!}
     {!! Form::text($elementName, "", $field->getAttributes()) !!}
     <ul class="cloud" id="">
+    @if($values)
     @foreach( $values as $point )
         <li>
             <a href="#">{{  $point-> name }}</a>
@@ -14,6 +16,7 @@
             {!! Form::hidden("title", $point->name, $field->getChildrenAttributes($loop->iteration, "name", Array(), $field->getFieldName() )) !!}
         </li>
     @endforeach
+    @endif
     </ul>   
 
     @if($field->getHelp())

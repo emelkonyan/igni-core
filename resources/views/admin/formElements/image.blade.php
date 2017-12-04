@@ -2,7 +2,8 @@
 
     $options = $field->getOptions();
     $fieldname = $options['field'];
-    $image = $field->getModel()->getThumbnailPath($fieldname);
+    $avatar = $field->getModel()->avatar_url();
+    $original = $field->getModel()->avatar_url();
     $filename = $field->getModel()->{$fieldname}; 
 
 ?>
@@ -11,7 +12,10 @@
     {!! Form::label($elementName, $options['label']) !!}
     <br>
     @if ($field->getValue())
-        <img src="{{ $image['path']  }}{{ $filename }}">
+        <a href="{{ $original }}">
+            <img src="{{ $avatar  }}">
+        </a>
+        <br>
     @endif
     {!! Form::file($elementName,  [
         'id' => $elementName,

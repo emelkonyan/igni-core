@@ -3,8 +3,8 @@
     $fieldname = $options['field'];
 
     //dd($field->getModel()->getThumbnailPath($fieldname));
-    $image = $field->getModel()->getThumbnailPath($fieldname);
-    $filename = $field->getModel()->{$fieldname};    
+    $filename = $field->getModel()->file_url();
+
 ?>
 {{-- Image --}}
 <div class="form-group {{ $errors->has($fieldName) ? 'has-error' : '' }}">
@@ -12,7 +12,7 @@
     <br>
 
     <video width="320" height="240" controls="">
-      <source type="video/mp4" src="{{$image['path']}}{{$filename}}">
+      <source type="video/mp4" src="{{ $filename }}">
     </video>
     {!! Form::file($elementName,  [
         'id' => $elementName,

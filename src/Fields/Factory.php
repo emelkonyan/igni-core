@@ -28,6 +28,7 @@ class Factory implements FactoryContract
         'model' => Model::class,
         'fk' => Fk::class,
         'buddy_type' => BuddyType::class,
+        'buddy_type_only' => BuddyTypeOnly::class,
         'versions' => Versions::class,
         'cloud' => Cloud::class,
         'nested' => Nested::class,
@@ -35,6 +36,7 @@ class Factory implements FactoryContract
         'video' => Video::class,
         'daystoweeks' => DaysToWeeks::class,
         'questionnaire_answers' => QuestionnaireAnswers::class,
+        'gender' => Gender::class,
     ];
 
     /**

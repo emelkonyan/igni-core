@@ -3,12 +3,14 @@
 namespace Despark\Cms\Http\Controllers;
 
 use Despark\Cms\Http\Requests\UserRequest;
+use Despark\Model\User;
 use Despark\Cms\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
 use Response;
 
 class UsersController extends AdminController
 {
+
     
     /**
      * Show the form for creating a new resource.
@@ -29,7 +31,7 @@ class UsersController extends AdminController
      *
      * @return Response
      */
-    public function store(UserRequest $request)
+    public function stor2e(UserRequest $request)
     {
 
 

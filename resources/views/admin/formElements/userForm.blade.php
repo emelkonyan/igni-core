@@ -1,12 +1,20 @@
 {{-- TODO action verb --}}
-{{ dd($form) }}
 {!!  Form::open([
     'url' => $form->getAction(),
     'method' => $form->getMethod(),
     'role' => $form->getRole(),
     'enctype'=> $form->getEnctype() ?? 'multipart/form-data', ]
 ) !!}
-{!! $form->renderFields() !!} 
+
+<?php 
+	//$baby_id = $form->getFields()[0]->getOptions()['parent']->baby->id; //Duuuuuh! 
+
+	//dd($baby_id->roles());
+	// If you are having troubles with the view that means the users doesnt have
+	//	a baby, which should be a MAJOR db inconsistency !
+?>
+
+
 {!! $form->renderFields() !!} 
 
 
