@@ -41,7 +41,7 @@ class AssetManager implements AssetsContract
     {
         if ( ! isset($this->assets['js'][$path])) {
             $this->assets['js'][$path] = [
-                'path'  => asset($path, env("REDIRECT_HTTPS")),
+                'path'  => asset($path, !env("APP_ENV")),
                 'order' => $order,
             ];
         }
@@ -55,7 +55,7 @@ class AssetManager implements AssetsContract
     {
         if ( ! isset($this->assets['css'][$path])) {
             $this->assets['css'][$path] = [
-                'path'  => asset($path, env("REDIRECT_HTTPS")),
+                'path'  => asset($path, !env("APP_ENV")),
                 'order' => $order,
             ];
         }
