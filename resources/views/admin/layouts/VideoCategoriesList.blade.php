@@ -211,5 +211,23 @@
             sSearch: "<span class='search-label uppercase'>Search</span>"
         }
     });
+
+
+    $('#data-table thead th').each( function () {
+        $(this).html( $(this).html() + '<br><input type="text" placeholder="Search " />' );
+    });
+
+    table.columns().every( function () {
+        var column = this;
+     
+        $( 'input', this.header() ).on( 'keyup change', function () {
+
+            column
+                .search( this.value )
+                .draw();
+            });
+        });
+
+            
 </script>
 @endpush

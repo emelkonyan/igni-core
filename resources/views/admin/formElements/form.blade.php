@@ -8,7 +8,7 @@
 
 {!! $form->renderFields() !!} 
 
-<button type="submit" class="btn btn-primary">Save</button>
+<button type="submit" class="btn btn-primary" onclick="$(this).hide()">Save</button>
 
 <?php $resourceConfig = $controller->getResourceConfig() ?>
 @if(isset($resourceConfig['parentModel']) AND request()->has($resourceConfig['parentModel']['foreignKey']))

@@ -76,13 +76,14 @@ class UsersController extends AdminController
         
         $input = $request->except('roles');
 
-        if ($request->has('password')) {
-            $input['password'] = bcrypt($request->password);
-        } else {
+        
+        if ($request->has('password')) 
+            $input['password'] =  \Hash::make($input['password']);
+        else
             unset($input['password']);
-        }
 
         $record = $this->model->findOrFail($id);
+
 
         if ($request->has('roles')) {
             $record->syncRoles($request->roles);
@@ -92,9 +93,9 @@ class UsersController extends AdminController
             $record->$metod()->sync($request->get($array, []));        
         }
 
-
         $record->update($input);
 
+        //dd($record);
         $this->notify([
             'type' => 'success',
             'title' => 'Successful update!',

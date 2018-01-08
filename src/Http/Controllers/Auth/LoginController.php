@@ -47,10 +47,11 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 
-
         $request->merge(['email' => DesparkEncryptor::encrypt($request->email)]);
-        $request->merge(['password' => '%756Ij9rk2{}X|h']); //TODO
+        //$request->merge(['password' => '%756Ij9rk2{}X|h']); //TODO
 
+
+        //dd($request);
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle

@@ -170,7 +170,7 @@
         lengthChange: false,
         searching: true,
         ordering: isSortable !== false,
-        info: false,
+        info: true,
         autoWidth: true,
         processing: true,
         serverSide: true,
@@ -203,7 +203,7 @@
             {
                 targets: "no-sort",
                 orderable: false,
-                searchable: false
+                searchable: true
             }
         ],
         aaSorting: [],
@@ -211,5 +211,40 @@
             sSearch: "<span class='search-label uppercase'>Search</span>"
         }
     });
+
+    $('#data-table thead th').each( function () {
+
+        if($(this).html() != 'Actions') 
+            $(this).html( $(this).html() + '<br><input class="form-control input-sm" type="text" placeholder="Search " />' );
+    });
+
+    table.columns().every( function () {
+        var column = this;
+
+        $( 'input', this.header() ).on( 'blur', function () {
+
+            column
+                .search( this.value )
+                .draw();
+            }).on("click", function() 
+            {
+                    return false;
+
+            }).on("keypress", function (e) {
+
+                    if(e.which === 13) {
+                        column
+                            .search( this.value )
+                            .draw();
+                        return false;
+                    }
+            
+            });
+        
+        });
+
+        $("input", )
+
+
 </script>
 @endpush

@@ -15,6 +15,8 @@ use Illuminate\Routing\Controller as BaseController;
 use View;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables;
+use Despark\Helpers\DesparkEncryptor;
+
 
 /**
  * Class AdminController.
@@ -103,8 +105,10 @@ abstract class AdminController extends BaseController
      */
     public function index()
     {
+
         $request = app(Request::class);
         if ($request->ajax()) {
+
             $dataTable = app(DataTables::class);
             $dataTableEngine = $dataTable->eloquent($this->prepareModelQuery($request));
 
@@ -126,13 +130,30 @@ abstract class AdminController extends BaseController
                 }
             }
 
+            if($this->model instanceof \Despark\Model\User) {
+                
+                
+                $requestColumns = $request->only("columns")['columns'];
+                $output = Array();
+                foreach($request->only("columns")['columns'] as $c) {
+                    if(
+                            in_array($c['name'], ['email', 'name'])
+                            AND $c['search']['value'] <> ""
+                        )
+                        $c['search']['value'] = DesparkEncryptor::encrypt($c['search']['value']);
+
+                    $output[] = $c;
+                }
+
+                $request->merge(['columns' => $output]);
+            }
+           	//print_r($request->all());die();
             $this->prepareDataTable($request, $dataTableEngine);
 
             return $dataTableEngine->make(true);
         }
 
         $this->viewData['model'] = $this->model;
-
         return view($this->getListView(), $this->viewData);
     }
 
@@ -285,7 +306,6 @@ abstract class AdminController extends BaseController
                 }
             }
         }
-
         return $this->dataTableColumns;
     }
 
