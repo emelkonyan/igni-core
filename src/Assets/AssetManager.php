@@ -55,7 +55,7 @@ class AssetManager implements AssetsContract
     {
         if ( ! isset($this->assets['css'][$path])) {
             $this->assets['css'][$path] = [
-                'path'  => asset($path, !env("APP_ENV")),
+                'path'  => asset($path, env("APP_ENV") == 'PRODUCTION'),
                 'order' => $order,
             ];
         }
