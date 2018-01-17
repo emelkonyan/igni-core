@@ -151,6 +151,14 @@
                         ],
                         value: id
                     },{
+                        type: 'checkbox',
+                        text: 'Insert thumbnail',
+                        name: 'videosvideo',
+                        classes: "insert_thumb",
+                        hidden: url == 'applink://videos?video=' ? false : true,
+                        values : [],
+                        value: id
+                    },{
                         type: 'listbox',
                         name: 'ask_mequestion',
                         classes: "selector",
@@ -160,7 +168,7 @@
 
                                 $sections = \Despark\Model\KnowledgeBase::all();
                                 foreach($sections as $v) 
-                                    echo '{ text: "' . addslashes($v->question) .'", value: "' . $v->id . '" },';
+                                    echo '{ text: "' . addslashes($v->question) .'", value: "' . $v->id . '", data_thumb: "ds"},';
                         ?>
                         ],
                         value: id,
@@ -183,7 +191,6 @@
                     },
                     ],
                     onInit: function() {
-                        alert("dd");
                     },
                     onsubmit: function( e ) {
                         var weblinks = {<?php
@@ -192,20 +199,33 @@
                             foreach($weblinks as $k =>$v)
                                     echo "'$k': '$v',";
                         
+                        ?>};                        
+
+                        var thumbnails = {<?php
+                        
+                            $thumbs = \Despark\Model\Video::all();
+                            foreach($thumbs as $v) 
+                                    echo "'{$v->id}': '" . addslashes($v->avatar_url()) . "',";
+                        
                         ?>};
                         var subinput = win.find(".selector:visible");
+                        var insert_thumb = win.find(".insert_thumb:visible").value();
+                        var html_content = e.data.title;
+
                         var subitem = subinput.value();
                         var link = e.data.section;
 
                         if(weblinks[link]) var weblink = weblinks[link];
                         if(subinput.text()) weblink = weblink + subinput.text();
                         
+                        if(insert_thumb) html_content = '<img  class="video-thumb" style="width: 300px!important" src="' + thumbnails[subinput.value()] + '">';
+
                         if (subitem) link = link + subitem;
                         if(link == 'applink://remember_to_ask?action=add&question=')
                                 link = link + e.data.title;
                         var output = '<a href="' +  link + '"  class="in-app-link"';
                         if (weblink) output = output + " data-weblink='" + weblink + '"';
-                        output = output + "'>" + e.data.title + '</a>'
+                        output = output + "'>" + html_content + '</a>'
                         //alert(output);//return false;
 
                         node.remove();
